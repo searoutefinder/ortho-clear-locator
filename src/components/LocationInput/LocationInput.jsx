@@ -98,7 +98,7 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
         let mapboxResults = [];
 
         try {
-          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(debouncedQuery)}.json?access_token=${import.meta.env.MAPBOX_TOKEN}&autocomplete=true&limit=5`);
+          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(debouncedQuery)}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}&autocomplete=true&limit=5`);
           const data = await response.json();
 
           mapboxResults = data.features.map((f) => {
