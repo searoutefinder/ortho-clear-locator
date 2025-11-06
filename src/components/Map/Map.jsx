@@ -63,7 +63,7 @@ const Map = () => {
   useEffect(() => {
     if (mapRef.current) return;
 
-    mapboxgl.accessToken = import.meta.env.MAPBOX_TOKEN;
+    mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN;
 
     mapRef.current = new mapboxgl.Map({
       container: mapContainer.current,
