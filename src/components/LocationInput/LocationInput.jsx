@@ -38,15 +38,22 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
         alert("Geolocation is not supported by this browser.");
       } 
   }
-  const geolocationSuccessHandler = (position) => {
+  const geolocationSuccessHandler = async (position) => {
+    const address = await reverseGeocode([position.coords.longitude, position.coords.latitude]);
+
     const currentLocation = {
       "type": "Feature", 
-      "properties": {}, 
+      "properties": {
+        "place_name": address.features[0].place_name
+      }, 
       "geometry": {
         "type": "Point",
         "coordinates": [position.coords.longitude, position.coords.latitude]
       }
     };
+    setQuery(address.features[0].place_name);
+    setIsSuggestionListOpen(false); 
+    setIsSuggestionSelected(true);      
     setUserLocation(currentLocation);
   }
   const geolocationFailureHandler = (error) => {
@@ -66,6 +73,18 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
     }    
   }
 
+  const reverseGeocode = async (lngLat) => {
+    try {
+      const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat[0]},${lngLat[1]}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`);
+      const data = await response.json();
+      
+      return data;
+      
+    } catch (error) {
+      console.error("Mapbox geocoding error:", error);
+      return null;
+    }        
+  }
   // Hooks
   useEffect(() => {
     
@@ -98,7 +117,7 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
         let mapboxResults = [];
 
         try {
-          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(debouncedQuery)}.json?access_token=${import.meta.env.MAPBOX_TOKEN}&autocomplete=true&limit=5`);
+          const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(debouncedQuery)}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}&autocomplete=true&limit=5`);
           const data = await response.json();
 
           mapboxResults = data.features.map((f) => {
