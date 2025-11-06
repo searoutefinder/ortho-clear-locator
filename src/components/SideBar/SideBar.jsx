@@ -36,7 +36,7 @@ const SideBar = ({locations}) => {
 
   return (
     <div className="transition-all duration-300 ease-in-out absolute right-0 bottom-0 w-full md:top-24 md:h-[calc(100vh-10rem)] md:w-96">
-      <div className="md:h-[4rem] p-4 flex flex-row hidden md:block text-lg font-semibold text-gray-700 flex-shrink-0 bg-white/50  backdrop-blur-sm">
+      <div className="md:h-[4rem] p-4 flex flex-row hidden md:block text-lg font-semibold text-[#3b3b3b] flex-shrink-0 bg-[#3b3b3b]/30  backdrop-blur-sm">
         <h2 className="text-center text-md">{locations.length} Ortho Clear Locations within view</h2>
       </div>    
       <div ref={sidebarRef} className={`
@@ -46,7 +46,7 @@ const SideBar = ({locations}) => {
         md:overflow-y-auto 
         flex 
         w-full 
-        bg-white/50 
+        bg-[#3b3b3b]/30
         backdrop-blur-sm 
         shadow-lg 
         pl-4
@@ -78,7 +78,7 @@ const SideBar = ({locations}) => {
               <div 
                 key={location.ID} 
                 ref={(el) => (cardRefs.current[location.ID] = el)}
-                className={`flex flex-col flex-shrink-0 w-54 md:w-full p-4 rounded-lg bg-[#FFF] shadow-md ${selectedLocationId === location.ID ? 'bg-[#ffd0ef]' : 'hover:bg-[#ffd0ef]'} cursor-pointer`}
+                className={`group flex flex-col flex-shrink-0 w-54 md:w-full p-4 rounded-lg bg-[#FFF] shadow-md ${selectedLocationId === location.ID ? 'bg-[#ed6299]' : 'hover:bg-[#ed6299]'} cursor-pointer`}
                 onClick={
                   () => {
                     setSelectedLocationId(location.ID)
@@ -91,16 +91,16 @@ const SideBar = ({locations}) => {
                   className="h-24 md:h-32 object-cover object-center w-full rounded-lg"
                   alt=""
                 />
-                <h3 className="mt-2 text-sm font-semibold text-gray-800 cursor-pointer" title={location.CLINIC}>
+                <h3 className={`group-hover:text-[#FFF] ${selectedLocationId === location.ID ? 'text-[#FFF]' : 'text-[#3b3b3b]'} mt-2 text-sm font-semibold cursor-pointer`} title={location.CLINIC}>
                   {location.CLINIC}
                 </h3>
-                <p className="mt-1 text-sm text-gray-600 mb-2">{`${location.STREET} ${location.NUMBER}, ${location.POSTCODE} ${location.CITY}`}</p>
+                <p className={`group-hover:text-[#FFF] ${selectedLocationId === location.ID ? 'text-[#FFF]' : 'text-[#3b3b3b]'} mt-1 text-sm mb-2`}>{`${location.STREET} ${location.NUMBER}, ${location.POSTCODE} ${location.CITY}`}</p>
                 <button
                   onClick={(e) => { 
                     e.stopPropagation();
                     ctaClickHandler(location); 
                   }} 
-                  className="rounded-3xl text-sm hover:bg-[rgb(240,35,116)] bg-[rgb(239,97,153)] p-2 mt-auto text-[#FFFFFF] cursor-pointer"
+                  className="rounded-3xl text-sm bg-[#3b3b3b] p-2 mt-auto text-[#FFFFFF] cursor-pointer"
                 >
                   AFSPRAAK MAKEN
                 </button>

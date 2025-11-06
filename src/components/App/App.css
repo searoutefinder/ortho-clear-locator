@@ -1,12 +1,31 @@
+@font-face {
+  font-family: "PP Mori";
+  src: url("./assets/fonts/PP-Mori-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "PP Mori";
+  src: url("./assets/fonts/PP-Mori-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@theme {
+  /* Here you define custom theme values */
+  --font-pp-mori: "PP Mori", sans-serif;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: 'Poppins', sans-serif;
+  font-family: var(--font-pp-mori);
 }
 
 .mapboxgl-ctrl-attrib, .mapboxgl-ctrl-logo {

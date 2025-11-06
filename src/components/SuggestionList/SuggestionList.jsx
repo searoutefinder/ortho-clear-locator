@@ -16,8 +16,8 @@ const SuggestionList = ({suggestions, highlightedIndex, onSelect}) => {
                     onSelect(item);
                   }}
                   className={`${
-                    isActive ? "bg-[rgb(251,246,242)] text-[rgb(18,18,18)]" : "text-[#000] hover:bg-[rgb(251,246,242)] hover:text-[rgb(18,18,18)]"
-                  } pl-4 py-1 cursor-pointer text-[#000] text-sm hover:bg-[rgb(251,246,242)] hover:text-[rgb(18,18,18)]`}
+                    isActive ? "bg-[#3b3b3b] text-[#FFF]" : "text-[#000] hover:bg-[#3b3b3b] hover:text-[#FFF]"
+                  } pl-4 py-1 cursor-pointer text-[#000] text-sm hover:bg-[#3b3b3b] hover:text-[#FFF]`}
                 >
                   {item.place_name}
                 </li>)
