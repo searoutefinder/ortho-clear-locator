@@ -10,7 +10,7 @@ const Map = () => {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
 
-  const { map, setMap, mapReady, setMapReady, selectedLocationObj, setSelectedLocationId, locations, setFilteredLocations, userLocation, zoomedLocationId } = useLocatorData();
+  const { setIsLoading, map, setMap, mapReady, setMapReady, selectedLocationObj, setSelectedLocationId, locations, setFilteredLocations, userLocation, zoomedLocationId } = useLocatorData();
 
   // Handlers
 
@@ -53,7 +53,9 @@ const Map = () => {
     });
 
     setMap(mapRef.current);
-    setMapReady(true);    
+    setMapReady(true); 
+    console.log("setIsLoading")
+    setIsLoading(false);   
   }
 
   const mapClickHandler = () => { 
@@ -69,7 +71,6 @@ const Map = () => {
       container: mapContainer.current,
       center: [6.309153470901201, 52.099502942886976],
       zoom: 6.7,
-      minZoom: 6.7,
       projection: 'mercator'
     })
     
@@ -97,8 +98,12 @@ const Map = () => {
 
     if(typeof selectedLocationObj.bbox !== "undefined") {
       mapRef.current.once("idle", mapIdleHandler);
-      mapRef.current.fitBounds([[selectedLocationObj.bbox[0], selectedLocationObj.bbox[1]], [selectedLocationObj.bbox[2], selectedLocationObj.bbox[3]]], {
-        animate: false
+      mapRef.current.fitBounds([
+        [selectedLocationObj.bbox[0], selectedLocationObj.bbox[1]], 
+        [selectedLocationObj.bbox[2], selectedLocationObj.bbox[3]]
+      ], {
+        animate: false,
+        padding: 150
       })
     }
     else
@@ -155,14 +160,7 @@ const Map = () => {
     
     mapRef.current.setCenter(userLocation.geometry.coordinates);
     mapRef.current.setZoom(8);
-    /*mapRef.current.flyTo({
-      center: userLocation.geometry.coordinates,
-      zoom: 8,
-      duration: 2000,
-      pitch: 0,
-      bearing: 0
-    });
-    */ 
+
   }, [userLocation]);
 
   return (

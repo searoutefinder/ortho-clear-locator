@@ -107,6 +107,7 @@ const LocatorContext = createContext();
 export const LocatorDataProvider = ({ children }) => {
   
   // States
+  const [isLoading, setIsLoading] = useState(true);
   const [userLocation, setUserLocation] = useState(null);
   const [map, setMap] = useState(null);
   const [mapReady, setMapReady] = useState(null);
@@ -119,6 +120,7 @@ export const LocatorDataProvider = ({ children }) => {
   const [zoomedLocationId, setZoomedLocationId] = useState(null);
   const [isSuggestionListOpen, setIsSuggestionListOpen] = useState(false);
   const [isSuggestionSelected, setIsSuggestionSelected] = useState(false);
+  const [isClearButtonVisible, setIsClearButtonVisible] = useState(false);
 
   return (
     <LocatorContext.Provider value={{ 
@@ -133,7 +135,9 @@ export const LocatorDataProvider = ({ children }) => {
       debouncedQuery, setDebouncedQuery,
       selectedLocationId, setSelectedLocationId,
       userLocation, setUserLocation,
-      zoomedLocationId, setZoomedLocationId
+      zoomedLocationId, setZoomedLocationId,
+      isClearButtonVisible, setIsClearButtonVisible,
+      isLoading, setIsLoading
      }}
     >
       {children}

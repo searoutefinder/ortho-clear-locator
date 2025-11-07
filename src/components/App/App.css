@@ -1,23 +1,21 @@
-@font-face {
-  font-family: "PP Mori";
-  src: url("./assets/fonts/PP-Mori-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "PP Mori";
-  src: url("./assets/fonts/PP-Mori-SemiBold.otf") format("opentype");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
 @import "tailwindcss";
 
+@font-face {
+  font-family: "PP Mori";
+  src: url("/fonts/PPMori-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PP Editorial New Italic";
+  src: url("/fonts/PPEditorialNew-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme {
-  /* Here you define custom theme values */
   --font-pp-mori: "PP Mori", sans-serif;
+  --font-pp-editorial-new-italic: "PP Editorial New Italic", sans-serif;
 }
 
 @tailwind base;
@@ -25,9 +23,11 @@
 @tailwind utilities;
 
 :root {
-  font-family: var(--font-pp-mori);
+  --font-pp-mori: "PP Mori", sans-serif;
+  --font-pp-editorial-new-italic: "PP Editorial New Italic", sans-serif;
 }
 
+
 .mapboxgl-ctrl-attrib, .mapboxgl-ctrl-logo {
-  display:none !important;
+  display: none !important;
 }

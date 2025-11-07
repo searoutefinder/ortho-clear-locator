@@ -8,6 +8,7 @@ import Map from '../Map/Map.jsx';
 import SideBar from '../SideBar/SideBar.jsx';
 import LocationInput from '../LocationInput/LocationInput.jsx';
 import SuggestionList from '../SuggestionList/SuggestionList.jsx';
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner.jsx'
 
 // Styles
 import './App.css';
@@ -23,7 +24,8 @@ const App = () => {
     setIsSuggestionListOpen, 
     setIsSuggestionSelected, 
     selectedLocationObj, 
-    setSelectedLocationObj
+    setSelectedLocationObj,
+    isLoading
   } = useLocatorData();
 
   // Local state
@@ -93,6 +95,7 @@ const App = () => {
         />
       }
       <SideBar locations={filteredLocations}/>
+      {isLoading && <LoadingSpinner />}
     </div>
   );
 }

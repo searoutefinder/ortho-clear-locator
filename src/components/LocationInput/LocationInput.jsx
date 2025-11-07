@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useLocatorData } from '../../context/LocatorContext.jsx';
 
 const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, highlightedIndex}) => {
@@ -13,9 +13,16 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
     setIsSuggestionSelected, 
     setIsSuggestionListOpen, 
     setSelectedLocationObj,
-    setUserLocation 
+    setUserLocation,
+    isClearButtonVisible, 
+    setIsClearButtonVisible,
+    setIsLoading
   } = useLocatorData();
   
+  // Refs
+  const inputRef = useRef(null);
+
+
   // Event handlers
   const keyDownHandler = (e) => {
     setIsSuggestionSelected(false);  
@@ -31,12 +38,25 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
       setQuery(suggestions[highlightedIndex]?.place_name);
     }   
   }
+  const clearInputHandler = (e) => {
+    setQuery("");
+    setIsSuggestionListOpen(false);
+    setSelectedLocationObj(null);
+    onChange(null); 
+    setIsClearButtonVisible(false); 
+    inputRef.current?.focus();  
+  }
+  const simpleSearchHandler = () => {
+    geocodeInput(inputRef.current.value);
+  }
   const geolocationClickHandler = () => {
+    setIsLoading(true);
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(geolocationSuccessHandler, geolocationFailureHandler);
-      } else {
-        alert("Geolocation is not supported by this browser.");
-      } 
+    } else {
+      alert("Geolocation is not supported by this browser.");
+      setIsLoading(false);
+    } 
   }
   const geolocationSuccessHandler = async (position) => {
     const address = await reverseGeocode([position.coords.longitude, position.coords.latitude]);
@@ -55,6 +75,8 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
     setIsSuggestionListOpen(false); 
     setIsSuggestionSelected(true);      
     setUserLocation(currentLocation);
+    setIsClearButtonVisible(true); 
+    setIsLoading(false);
   }
   const geolocationFailureHandler = (error) => {
     switch(error.code) {
@@ -70,9 +92,9 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
       case error.UNKNOWN_ERROR:
         alert("An unknown error occurred.");
       break;
-    }    
+    }
+    setIsLoading(false);    
   }
-
   const reverseGeocode = async (lngLat) => {
     try {
       const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${lngLat[0]},${lngLat[1]}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`);
@@ -84,6 +106,28 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
       console.error("Mapbox geocoding error:", error);
       return null;
     }        
+  }
+  const geocodeInput = async (addressInput) => {
+    try {
+      const response = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(addressInput)}.json?access_token=${import.meta.env.VITE_MAPBOX_TOKEN}`);
+      const data = await response.json();
+      
+      const f = data.features[0];
+
+      let item = {
+        "latlng": f.center,
+        "place_name": f.place_name,
+        "bbox": f.bbox  
+      }
+
+      setSelectedLocationObj(item);
+      setQuery(item.place_name);
+      setIsSuggestionSelected(true);
+      setIsSuggestionListOpen(false);  
+    }
+    catch(error) {
+      console.log(error);
+    }
   }
   // Hooks
   useEffect(() => {
@@ -109,8 +153,12 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
         setIsSuggestionListOpen(false);
         setSelectedLocationObj(null);
         onChange(null);
+        setIsClearButtonVisible(false);
         return;
       }
+
+      setIsClearButtonVisible(true);
+      
 
       if (debouncedQuery.trim()) {
 
@@ -144,39 +192,49 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
   }, [debouncedQuery]);  
 
   return (
-    <div className="transition-all duration-300 ease-in-out bg-[#3b3b3b]/30 backdrop-blur-sm absolute w-full md:right-0 md:top-0 md:w-96 h-24 p-6 z-999">
-      <div className="flex justify-center items-center w-full h-full">
-        <div className="bg-[#FFF] w-full h-full rounded-3xl shadow-md pr-14">
-        <input 
-          value={query} 
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={keyDownHandler}
-          type="text" 
-          className="focus:outline-none bg-[#FFF] p-3 pl-6 w-full rounded-tl-3xl rounded-bl-3xl" 
-          placeholder="Enter your address"
-        />
-        <button
-          onClick={geolocationClickHandler} 
-          className="flex absolute right-8 top-10 flex justify-center items-center cursor-pointer" 
-          title="Use my current location"
-        >
-          <span className="h-9 w-9">
-            <svg
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlnsXlink="http://www.w3.org/1999/xlink" 
-                viewBox="0 0 447.342 447.342"
-                xmlSpace="preserve"
-                className="h-5 w-5"
-            >
-              <path
-                d="M443.537,3.805c-3.84-3.84-9.686-4.893-14.625-2.613L7.553,195.239c-4.827,2.215-7.807,7.153-7.535,12.459  c0.254,5.305,3.727,9.908,8.762,11.63l129.476,44.289c21.349,7.314,38.125,24.089,45.438,45.438l44.321,129.509  c1.72,5.018,6.325,8.491,11.63,8.762c5.306,0.271,10.244-2.725,12.458-7.535L446.15,18.429  C448.428,13.491,447.377,7.644,443.537,3.805z"
-                style={{fill:"none",stroke:"#8f8f8f",strokeOpacity:1,strokeWidth:26.77532539,strokeMiterlimit:4,strokeDasharray:"none"}}
-              />
+    <div className="transition-all duration-300 ease-in-out bg-[#3b3b3b] absolute w-full md:left-0 md:top-0 h-24 p-6 z-999">
+      <div className="flex gap-x-2 justify-center items-center w-full h-full">
+        <div className="flex bg-[#FFF] w-full h-full rounded-3xl shadow-md pr-0">
+          <input 
+            ref={inputRef}
+            value={query} 
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={keyDownHandler}
+            type="text" 
+            className="text-sm w-full flex flex-col focus:outline-none bg-[#FFF] p-3 pl-6 rounded-tl-3xl rounded-bl-3xl" 
+            placeholder="Enter your address"
+          />
+          {
+            isClearButtonVisible  && 
+              <button
+                onClick={clearInputHandler} 
+                className="flex relative right-10 top-0 justify-center items-center cursor-pointer"
+                title="Clear Input"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#3b3b3b" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </button>
+          }
+          <button
+            onClick={geolocationClickHandler} 
+            className="relative right-6 top-0 flex justify-center items-center cursor-pointer" 
+            title="Use my current location"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#3b3b3b" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
             </svg>
-          </span>
-        </button>
+          </button>          
         </div>
+        <button
+          onClick={simpleSearchHandler} 
+          className="flex p-3 w-20 rounded-3xl bg-[#FFF] justify-center items-center cursor-pointer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#3b3b3b" className="size-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </button>
       </div>
     </div>
   );

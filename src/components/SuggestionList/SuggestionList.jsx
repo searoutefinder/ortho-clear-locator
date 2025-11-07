@@ -3,7 +3,7 @@ import { useLocatorData } from '../../context/LocatorContext.jsx';
 
 const SuggestionList = ({suggestions, highlightedIndex, onSelect}) => {
     return (
-      <div className="right-6 left-6 md:left-[unset] top-20 pt-5 pb-3 absolute md:w-84 h-auto z-999 bg-[#FFF] rounded-3xl shadow-md">
+      <div className="absolute left-6 right-6 top-20 pt-5 pb-3 md:w-1/4 h-auto z-999 bg-[#FFF] rounded-xl shadow-md">
         <ul className="m-0 p-0 list-none">
           {
             suggestions.length > 0 ? (
@@ -15,7 +15,7 @@ const SuggestionList = ({suggestions, highlightedIndex, onSelect}) => {
                   onClick={() => {
                     onSelect(item);
                   }}
-                  className={`${
+                  className={`font-pp-mori ${
                     isActive ? "bg-[#3b3b3b] text-[#FFF]" : "text-[#000] hover:bg-[#3b3b3b] hover:text-[#FFF]"
                   } pl-4 py-1 cursor-pointer text-[#000] text-sm hover:bg-[#3b3b3b] hover:text-[#FFF]`}
                 >
