@@ -90,9 +90,10 @@ const SideBar = ({locations}) => {
                   className="h-24 md:h-32 object-cover object-center w-full rounded-lg"
                   alt=""
                 />
-                <h3 className={
-                  `group-hover:text-[#FFF] ${selectedLocationId === location.ID ? 'text-[#FFF]' : 
-                    'text-[#3b3b3b]'} text-center text-md md:text-xl mt-2 cursor-pointer italic font-pp-editorial-new-italic`} title={location.CLINIC}>
+                <h3 
+                  className={`group-hover:text-[#FFF] ${selectedLocationId === location.ID ? 'text-[#FFF]' : 
+                    'text-[#3b3b3b]'} text-center text-md md:text-2xl mt-2 cursor-pointer italic font-pp-editorial-new-italic`} 
+                  title={location.CLINIC}>
                   {location.CLINIC}
                 </h3>
                 <p className={`font-pp-mori group-hover:text-[#FFF] ${selectedLocationId === location.ID ? 'text-[#FFF]' : 'text-[#3b3b3b]'} mt-1 text-sm mb-2 text-center `}>{`${location.STREET} ${location.NUMBER}, ${location.POSTCODE} ${location.CITY}`}</p>
