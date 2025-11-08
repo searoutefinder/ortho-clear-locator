@@ -3,7 +3,7 @@ import { useLocatorData } from '../../context/LocatorContext.jsx';
 
 const SuggestionList = ({suggestions, highlightedIndex, onSelect}) => {
     return (
-      <div className="absolute left-6 right-6 top-20 pt-5 pb-3 md:w-1/4 h-auto z-999 bg-[#FFF] rounded-xl shadow-md">
+      <div className="absolute left-6 right-6 top-18 pt-5 pb-3 md:w-1/4 h-auto z-999 bg-[#FFF] rounded-xl shadow-md">
         <ul className="m-0 p-0 list-none">
           {
             suggestions.length > 0 ? (
