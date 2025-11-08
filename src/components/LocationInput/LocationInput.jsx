@@ -201,7 +201,7 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={keyDownHandler}
             type="text" 
-            className="text-sm w-full flex flex-col focus:outline-none bg-[#FFF] p-3 pl-6 pr-6 rounded-tl-3xl rounded-bl-3xl" 
+            className="text-base w-full flex flex-col focus:outline-none bg-[#FFF] p-3 pl-6 pr-6 rounded-tl-3xl rounded-bl-3xl" 
             placeholder="Enter your address"
           />
           {
