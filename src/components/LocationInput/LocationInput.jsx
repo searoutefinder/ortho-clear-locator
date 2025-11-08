@@ -192,7 +192,7 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
   }, [debouncedQuery]);  
 
   return (
-    <div className="transition-all duration-300 ease-in-out bg-[#3b3b3b] absolute w-full md:left-0 md:top-0 h-24 p-6 z-999">
+    <div className="transition-all duration-300 ease-in-out bg-[#3b3b3b] absolute w-full md:left-0 md:top-0 h-20 p-4 z-999">
       <div className="flex gap-x-2 justify-center items-center w-full h-full">
         <div className="flex bg-[#FFF] w-full h-full rounded-3xl shadow-md pr-0">
           <input 

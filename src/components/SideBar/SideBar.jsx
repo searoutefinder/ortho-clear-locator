@@ -35,7 +35,8 @@ const SideBar = ({locations}) => {
   }, [selectedLocationId]);
 
   return (
-    <div className="transition-all duration-300 ease-in-out absolute right-0 bottom-0 w-full md:top-24 md:h-[calc(100vh-6rem)] md:w-96 bg-[#3b3b3b]/30  backdrop-blur-sm">
+    <div className="transition-all duration-300 ease-in-out absolute right-0 bottom-0 w-full md:top-16 
+    md:h-[calc(100vh-4rem)] md:w-96 bg-[#3b3b3b]/30  backdrop-blur-sm">
       
       <div className="md:h-[4rem] p-4 flex flex-row hidden md:hidden text-lg font-semibold text-[#3b3b3b] flex-shrink-0">
         <h2 className="text-center text-md">{locations.length} Ortho Clear Locations within view</h2>
@@ -58,7 +59,7 @@ const SideBar = ({locations}) => {
         max-h-72
         md:flex-col 
         md:h-screen
-        md:max-h-[calc(100vh-6rem)] ${locations.length === 0 ? 'justify-center' : ''}`}
+        md:max-h-[calc(100vh-4rem)] ${locations.length === 0 ? 'justify-center' : ''}`}
       >
 
 
