@@ -194,7 +194,7 @@ const LocationInput = ({onChange, onArrowDown, onArrowUp, onEnter, suggestions, 
   return (
     <div className="transition-all duration-300 ease-in-out bg-[#3b3b3b] absolute w-full md:left-0 md:top-0 h-20 p-4 z-999">
       <div className="flex gap-x-2 justify-center items-center w-full h-full">
-        <div className="flex bg-[#FFF] w-full h-full rounded-3xl shadow-md pr-4">
+        <div className="flex bg-[#FFF] w-full h-full rounded-3xl shadow-md pr-6">
           <input 
             ref={inputRef}
             value={query} 
